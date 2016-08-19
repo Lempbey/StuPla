@@ -1,0 +1,25 @@
+.horizontal-nav {
+    font: normal 25px sans-serif;
+    width: 100%;
+    background: #FF7F27;
+}
+
+.horizontal-nav ul { 
+    margin: 10px;
+    background: #FF7F27;
+    float: left;
+    text-align: center;
+}
+
+.horizontal-nav ul li {   
+    list-style: none;
+    float: left;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.horizontal-nav ul li a {
+    text-decoration: none;
+    display: block;
+    color: white;
+}
