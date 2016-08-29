@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $_SESSION["userid"]=1;
     if(!isset($_SESSION['userid'])) {
         die('Bitte zuerst <a href="login.php">einloggen</a>');
     }
@@ -24,7 +25,11 @@
         <link href="../css/nav.css" rel="stylesheet" type="text/css" media="screen">
         <link href="../css/footer.css" rel="stylesheet" type="text/css" media="screen">
         <link href="../css/icons.css" rel="stylesheet" type="text/css" media="screen">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+        <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../js/graphs.js"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -40,16 +45,12 @@
                 </ul>
             </nav>
         </header>
+        <main>
+            <div id="chart1"></div>
+            <div class="datenLaden" style="width: 40px;height: 40px;background-color: #698039"></div>
+            <div id="chart2"></div>
+        </main>
 
-        <?php
-            echo "Ihre bisherigen Leistungen:<br />";
-            $statement = $pdo->prepare("SELECT bezeichnung, note FROM leistungsschein l INNER JOIN fach f ON (l.fachnr=f.fachnr) WHERE id = ?");
-            $statement->execute(array($userid));
-        
-            while($row = $statement->fetch()) {
-                echo $row['bezeichnung'].": ".$row['note']."<br />";
-            }
-        ?>
         <form action="logout.php">
             <input type="submit" value="logout">
         </form>
@@ -89,5 +90,6 @@
             </div>
         </footer>
         </div>
+        <div id="hidden" style="display:none"></div>
     </body>
 </html>
