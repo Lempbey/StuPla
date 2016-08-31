@@ -2,14 +2,11 @@ var schein = [];
 
 $(document).ready(function(){
 
-
-
     $.ajax({
         url: '../xml/leistungen.xml',
         type:'POST',
         dataType: 'xml',
         beforeSend: function(){
-            $("#hidden").load("data.php",{userid:1});
         },
         complete:function(){
 
