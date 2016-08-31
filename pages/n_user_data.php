@@ -54,7 +54,7 @@
             </nav>
         </header>
         <main>
-
+            <!--Radiomenu zur Auswahl des gewünschten Diagramms-->
             <div id="chart1"></div>
             <div id="chart2"></div>
             <form id="chartForm">

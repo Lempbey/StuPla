@@ -5,6 +5,7 @@
         die('Bitte zuerst <a href="login.php">einloggen</a>');
     }
     $userid = $_SESSION['userid'];
+    //JavaScript, welches die XML Datei erzeugt und dann auf eigtl Userseite weiterleitet
     echo '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){

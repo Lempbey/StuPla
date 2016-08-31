@@ -57,7 +57,7 @@ $user = $statement->fetch();
             $("#wahlpflichtfach").on("click",function(){
                 $("#fachSelect").hide();
             });
-
+            //XML Datei für Pflichtfächer wird ausgelesen
             $.ajax({
                 url: '../xml/pflichtfaecher.xml',
                 type: 'GET',
@@ -155,6 +155,7 @@ $user = $statement->fetch();
                 <label for="semester">Semester der erbrachten Leistung:</label>
                 <select name="semester" id="semester">
                     <?php
+                        //Dynamisches Erzeugen der Semesterauswahl (immer letzte 10 Jahre WS+SS)
                         $past = new DateTime('-10 years');
                         $now = new DateTime();
                         $now->getTimestamp();
