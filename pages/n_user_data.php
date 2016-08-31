@@ -20,16 +20,24 @@
     <head>
         <title>Startseite</title>
         <meta charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/sunny/jquery-ui.css">
         <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
         <link href="../css/stylesheet.css" rel="stylesheet" type="text/css" media="screen"/>
         <link href="../css/nav.css" rel="stylesheet" type="text/css" media="screen">
         <link href="../css/footer.css" rel="stylesheet" type="text/css" media="screen">
         <link href="../css/icons.css" rel="stylesheet" type="text/css" media="screen">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
         <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="../js/graphs.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#radioCharts").buttonset();
+                $(".ui-buttonset .ui-button").css("min-width","250px");
+            });
+        </script>
     </head>
     <body>
         <div class="wrapper">
@@ -46,9 +54,25 @@
             </nav>
         </header>
         <main>
+
             <div id="chart1"></div>
-            <div class="datenLaden" style="width: 40px;height: 40px;background-color: #698039"></div>
             <div id="chart2"></div>
+            <form id="chartForm">
+                <div id="radioCharts">
+                    <input type="radio" id="ectsSemester" class="datenLaden" name="charts" checked="checked" value="1">
+                    <label for="ectsSemester">ECTS/Semester</label>
+
+                    <input type="radio" id="notenschnittSemester" class="datenLaden" name="charts" value="2">
+                    <label for="notenschnittSemester">Notenschnitt/Semester</label>
+
+                    <input type="radio" id="ectsGesamt" class="datenLaden" name="charts" value="3">
+                    <label for="ectsGesamt">ECTS/gesamt</label></br>
+
+                    <input type="radio" id="ectsSoll" class="datenLaden" name="charts" value="4">
+                    <label for="ectsSoll">ECTS-Soll</label>
+                </div>
+            </form>
+
         </main>
 
         <form action="logout.php">

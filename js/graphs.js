@@ -2,30 +2,18 @@ var schein = [];
 
 $(document).ready(function(){
 
-    $("#hidden").load("data.php",{userid:1});
-    $(".datenLaden").click(function(){$.ajax({
+
+
+    $.ajax({
         url: '../xml/leistungen.xml',
-        type:'GET',
+        type:'POST',
         dataType: 'xml',
         beforeSend: function(){
-            /*checkForUpdates();*/
-            /*createLabel();*/
-            /*createSeries();*/
+            $("#hidden").load("data.php",{userid:1});
         },
         complete:function(){
-            var data = {
-                // A labels array that can contain any sort of values
-                labels: [1,2,3,4],
-            // Our series array that contains series objects or in this case series data arrays
-            series: [[
-                schein[0][0],schein[1][0],4,3
-            ]]
-        };
 
-            // Create a new line chart object where as first parameter we pass in a selector
-            // that is resolving to our chart container element. The Second parameter
-            // is the actual data object.
-            new Chartist.Line('#chart2', data);
+            new Chartist.Bar('#chart1', {labels:['1.Semester','2.Semester','3.Semester','4.Semester','5.Semester','6.Semester'],series:[['25','25','20','40','35','40']]});
         },
         success: function(xml){
             // Extract relevant data from XML
@@ -49,10 +37,44 @@ $(document).ready(function(){
         error: function(data){
             alert('Error loading XML data');
         }
-    })});
+    });
 
+    $("#submit_vote").click(function(e){
 
+        $.ajax( {
+            type: "POST",
+            url: "ajax_submit_vote.php",
+            data: $('#poll_form').serialize(),
+            success: function( response ) {}
+        });
 
-
-    new Chartist.Bar('#chart1', {labels:['1.Semester','2.Semester','3.Semester','4.Semester','5.Semester','6.Semester'],series:[['25','25','20','40','35','40']]});
+    });
+    $(".datenLaden").click(function(){
+        var option=$('input[type="radio"]:checked').val();
+        switch (option){
+            case "1":
+                var summe=[0,0,0,0,0];
+                for(var i=0;i<=schein.length-1;i++){
+                    var a = schein[i][3];
+                    summe[a]=parseInt(schein[i][1],10)+parseInt(summe[a],10);
+                    alert(summe[i]);
+                }
+                var data = {
+                    // A labels array that can contain any sort of values
+                    labels: ["1.Semester","2.Semester","3.Semester","4.Semester","5.Semester","6.Semester"],
+                    // Our series array that contains series objects or in this case series data arrays
+                    series: [[
+                        summe[0],summe[1],summe[2],summe[3],summe[4],summe[5]
+                    ]]
+                };
+                new Chartist.Line('#chart2', data);
+                break;
+        }
+    });
 });
+
+
+
+
+
+

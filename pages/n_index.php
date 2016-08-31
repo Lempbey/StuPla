@@ -25,6 +25,7 @@
 
 	<script type="text/javascript">
 	$(document).ready(function(){
+		//Daten für den Chart einspeisen
 		var data = {
 			// A labels array that can contain any sort of values
 			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
@@ -39,6 +40,7 @@
 // is the actual data object.
 		new Chartist.Line('.ct-chart', data);
 
+		// Andere Variante um Daten einzuspeisen und statt Line-Chart ein Balkendiagramm
 		new Chartist.Bar('#chart1', {labels:['1.Semester','2.Semester','3.Semester','4.Semester','5.Semester','6.Semester'],series:[['25','25','20','40','35','40']]});
 	});
 	</script>
