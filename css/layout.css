@@ -88,3 +88,7 @@ nav> ul {
     background-color: #1E2C00;
     color: darkgrey;
 }
+
+#chartWahl {
+    display: flex;
+}

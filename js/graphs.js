@@ -42,6 +42,76 @@ $(document).ready(function(){
         var option=$('input[type="radio"]:checked').val();
         switch (option){
             case "1":
+                var summe=[0,0,0,0,0,0];
+                //Alle Scheine auslesen und für jedes Semester die ECTS summieren
+                for(var i=0;i<=schein.length-1;i++){
+                    var a = schein[i][3];
+                    summe[a]=parseInt(schein[i][1],10)+parseInt(summe[a],10);
+                }
+                var data = {
+                    // A labels array that can contain any sort of values
+                    labels: ["1.Semester","2.Semester","3.Semester","4.Semester","5.Semester","6.Semester"],
+                    // Our series array that contains series objects or in this case series data arrays
+                    series: [[
+                        summe[0],summe[1],summe[2],summe[3],summe[4],summe[5]
+                    ]]
+                };
+                var options = {
+                    width: 700,
+                    height: 500
+                };
+                new Chartist.Line('#chart2', data,options);
+                break;
+            case "2":
+                var summe=[0,0,0,0,0,0];
+                var ects=[0,0,0,0,0,0];
+                var ectsGew=[0,0,0,0,0,0];
+                //Alle Scheine auslesen und für jedes Semester die ECTS summieren
+                for(var i=0;i<=schein.length-1;i++){
+                    var a = schein[i][3];
+                    summe[a]=parseInt(schein[i][1],10)+parseInt(summe[a],10);
+                    ects[a]=parseInt(schein[i][1],10)+parseInt(ects[a],10);
+                    ectsGew[a]=(parseInt(schein[i][1],10)*parseInt(schein[i][0],10))+parseInt(ectsGew[a],10);
+                }
+                var durchschnittsnote=[];
+                for(var i=1;i<=6;i++){
+                    durchschnittsnote[i]=parseInt(ectsGew[i],10)/parseInt(ects[i],10);
+                }
+                var data = {
+                    // A labels array that can contain any sort of values
+                    labels: ["1.Semester","2.Semester","3.Semester","4.Semester","5.Semester","6.Semester"],
+                    // Our series array that contains series objects or in this case series data arrays
+                    series: [[
+                        durchschnittsnote[0],durchschnittsnote[1],durchschnittsnote[2],durchschnittsnote[3],durchschnittsnote[4],durchschnittsnote[5]
+                    ]]
+                };
+                var options = {
+                    width: 700,
+                    height: 500
+                };
+                new Chartist.Line('#chart2', data,options);
+                break;
+            case "3":
+                var ectsSumme=0;
+                var geschafft=0;
+                var nochOffen=0;
+                //Alle Scheine auslesen und für jedes Semester die ECTS summieren
+                for(var i=0;i<=schein.length-1;i++){
+
+                    ectsSumme =parseInt(schein[i][1],10)+parseInt(ectsSumme,10);
+                }
+                geschafft = Math.round(parseFloat(ectsSumme)/180*100);
+                nochOffen = Math.round(100-parseFloat(geschafft));
+                new Chartist.Pie('#chart2', {
+                    series:[geschafft,nochOffen]},
+                    {
+                        chartPadding: 30,
+                        labelOffset: 50,
+                        labelDirection: 'explode'
+                    }
+                );
+                break;
+            case "4":
                 var summe=[0,0,0,0,0];
                 //Alle Scheine auslesen und für jedes Semester die ECTS summieren
                 for(var i=0;i<=schein.length-1;i++){
@@ -57,7 +127,11 @@ $(document).ready(function(){
                         summe[0],summe[1],summe[2],summe[3],summe[4],summe[5]
                     ]]
                 };
-                new Chartist.Line('#chart2', data);
+                var options = {
+                    width: 700,
+                    height: 500
+                };
+                new Chartist.Line('#chart2', data,options);
                 break;
         }
     });

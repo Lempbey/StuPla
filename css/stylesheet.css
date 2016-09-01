@@ -25,9 +25,10 @@ label {
 }
 
 main {
-    width: 40%;
+    width: 80%;
     padding: 25px;
     padding-left: 50px;
+    padding-top: 5%;
     margin: 0 auto;
     min-height: 500px;
 }
@@ -98,4 +99,14 @@ button[type="submit"]:active {
 
 .clearfix {
     overflow: auto;
+}
+
+#chartWahl {
+    display: flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+#chart2 {
+    height: 30em;
 }
