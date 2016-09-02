@@ -1,10 +1,27 @@
 <?php
-   /* Vor Beenden der Session wieder aufnehmen */
-   session_start();
+    /* Vor Beenden der Session wieder aufnehmen */
+	session_start();
+    $pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
 
-   /* Beenden der Session */
-   session_destroy();
-   $_SESSION = array();
+	if(isset($_GET['login'])) {
+		$email = $_POST['email'];
+		$password = $_POST['password'];
+
+		$statement = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+		$result = $statement->execute(array('email' => $email));
+		$user = $statement->fetch();
+
+		if ($user !== false && password_verify($password, $user['password'])) {
+			$_SESSION['userid'] = $user['id'];
+			header('Location: n_create_data.php');
+		} else {
+			$errorMessage = "E-Mail oder Passwort war ungültig<br>";
+		}
+	}
+
+    /* Beenden der Session */
+    session_destroy();
+    $_SESSION = array();
 ?>
 <!DOCTYPE html>
 <html>
@@ -67,10 +84,10 @@
 	}
 	?>
 	<div class="login">
-		<form id="login" method="post" action="login.php">
+		<form id="login" action="?login=1" method="post">
 			<input type='hidden' name='submitted' id='submitted' value='1'/>
 			<label for="email">Ihre Zugangs-eMail</label>
-			<input type="email" id="email" name="email" placeholder="Ihre E-Mail">
+			<input type="email" id="email" name="email" placeholder="Ihre E-Mail" size="40" maxlength="250">
 			<label for="password">Passwort</label>
 			<input type="password" id="password" name="password" placeholder="*****">
 			<button type="submit" name="login_btn" id="login_btn" >Einloggen</button></br>
