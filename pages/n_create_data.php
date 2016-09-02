@@ -18,7 +18,7 @@ $user = $statement->fetch();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Startseite</title>
+    <title>Noten eintragen</title>
     <meta charset="utf-8"/>
     <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
     <link href="../css/stylesheet.css" rel="stylesheet" type="text/css" media="screen"/>

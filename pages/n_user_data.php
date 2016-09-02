@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html> 
     <head>
-        <title>Startseite</title>
+        <title>Userpanel</title>
         <meta charset="utf-8"/>
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/sunny/jquery-ui.css">
         <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
