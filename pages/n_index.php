@@ -13,7 +13,7 @@
 
 		if ($user !== false && password_verify($password, $user['password'])) {
 			$_SESSION['userid'] = $user['id'];
-			header('Location: n_create_data.php');
+			header('Location: n_user_data.php');
 		} else {
 			$errorMessage = "E-Mail oder Passwort war ungültig<br>";
 		}
@@ -68,9 +68,9 @@
 		<div class="clearfix">
 			<nav class="horizontal-nav full-width">
 				<ul>
-					<li><a href="login.php"><h5>Studienplaner</h5></a></li>
-					<li><a href="login.php">Home</a></li>
-					<li><a href="registrieren.php">Registration</a></li>
+					<li><a href="n_index.php"><h5>Studienplaner</h5></a></li>
+					<li><a href="n_index.php">Home</a></li>
+					<li><a href="n_registration.php">Registration</a></li>
 					<li><a href="#">About</a></li>
 					<li><a href="#">Contact</a></li>
 					<li><a href="#">Impressum</a></li>
