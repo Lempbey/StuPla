@@ -21,10 +21,10 @@ $user = $statement->fetch();
     <title>Startseite</title>
     <meta charset="utf-8"/>
     <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
-    <link href="../../Studienplaner/css/stylesheet.css" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="../../Studienplaner/css/nav.css" rel="stylesheet" type="text/css" media="screen">
-    <link href="../../Studienplaner/css/footer.css" rel="stylesheet" type="text/css" media="screen">
-    <link href="../../Studienplaner/css/icons.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="../css/stylesheet.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="../css/nav.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="../css/footer.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="../css/icons.css" rel="stylesheet" type="text/css" media="screen">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/humanity/jquery-ui.css">
