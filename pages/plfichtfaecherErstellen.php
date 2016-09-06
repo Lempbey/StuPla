@@ -43,8 +43,73 @@ $faecher = array(
         "ATW",
         "WI",
         "5"
+    ),
+    new Fach(
+        "2",
+        "Programmierung",
+        "WI",
+        "5"
+    ),
+    new Fach(
+        "2",
+        "Finanzierung",
+        "BWL",
+        "5"
+    ),
+    new Fach(
+        "1",
+        "International Business (Englisch/Französisch/Spanisch) 2",
+        "IB",
+        "5"
+    ),
+    new Fach(
+        "1",
+        "International Business (Englisch/Französisch/Spanisch) 1",
+        "IB",
+        "5"
+    ),
+    new Fach(
+        "1",
+        "Operations Research / Datenverarbeitung",
+        "BWL",
+        "5"
+           ),
+    new Fach(
+        "1",
+        "Grundlagen Wirtschaftsprivatrecht",
+        "BWL",
+        "5"
+    ),
+    new Fach(
+        "2",
+        "Jahresabschluss",
+        "BWL",
+        "5"
+    ),
+    new Fach(
+        "2",
+        "Grundlagen der Volkswirtschaftslehre: Mikroökonomie",
+        "BWL",
+        "5"
+    ),
+        new Fach(
+            "1",
+            "Klassische und moderne Physik",
+            "WIng",
+            "5"
+        ),
+    new Fach(
+        "2",
+        "Spezielle Themen der Physik",
+        "WIng",
+        "5"
+    ),
+    new Fach(
+        "2",
+        "Grundlagenlabor",
+        "WIng",
+        "5"
     )
-
 );
 
 $xml = new DOMDocument();
