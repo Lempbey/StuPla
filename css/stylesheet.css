@@ -110,3 +110,23 @@ button[type="submit"]:active {
 #chart2 {
     height: 30em;
 }
+
+.done {
+    background: green;
+}
+
+.todo {
+    background: red;
+}
+
+.semesterReihe {
+    margin-left:-50px;
+}
+.droppableFach {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#diskette {
+    font-size: 20px;
+}
