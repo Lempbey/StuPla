@@ -103,42 +103,44 @@
             $userid = $_SESSION['userid'];
             $showFormular = true;
 
-            if(isset($_GET['register'])) {
-                $userid = $_SESSION['userid'];
-                $error = false;
-                $fachnr = $_POST['fachnr'];
-                $note = $_POST['note'];
+        if(isset($_GET['register'])) {
+            $userid = $_SESSION['userid'];
+            $error = false;
+            $fachnr = $_POST['fachnr'];
+            $note = $_POST['note'];
+            $semester = $_POST['semester'];
+            $ects = $_POST['ects'];
+
+            if(!$error) {
+                $statement = $pdo->prepare("SELECT * FROM leistungsschein WHERE id = :userid AND fachnr = :fachnr");
+                $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr));
+                $user = $statement->fetch();
+
+                if($user !== false) {
+                    $statement = $pdo->prepare("UPDATE leistungsschein SET note = :note WHERE id = :userid AND fachnr = :fachnr");
+                    $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note));
+
+                    if($result) {
+                        echo 'Note erfolgreich geändert zurück zur <a href="geheim.php">Übersicht.</a>';
+                        $showFormular = false;
+                        $error = true;
+                    }
+                }
 
                 if(!$error) {
-                    $statement = $pdo->prepare("SELECT * FROM leistungsschein WHERE id = :userid AND fachnr = :fachnr");
-                    $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr));
-                    $user = $statement->fetch();
+                    $statement = $pdo->prepare("INSERT INTO leistungsschein (id, fachnr, note, semester, ects) VALUES (:userid, :fachnr, :note, :semester, :ects)");
+                    $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note, 'semester' => $semester, 'ects' => $ects));
 
-                    if($user !== false) {
-                        $statement = $pdo->prepare("UPDATE leistungsschein SET note = :note WHERE id = :userid AND fachnr = :fachnr");
-                        $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note));
-
-                        if($result) {
-                            echo 'Note erfolgreich geändert zurück zur <a href="geheim.php">Übersicht.</a>';
-                            $showFormular = false;
-                            $error = true;
-                        }
-                    }
-
-                    if(!$error) {
-                        $statement = $pdo->prepare("INSERT INTO leistungsschein (id, fachnr, note) VALUES (:userid, :fachnr, :note)");
-                        $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note));
-
-                        if($result) {
-                            header('Location: geheim.php');
-                            echo 'Note erfolgreich eingetragen <a href="geheim.php">zurück zur Übersicht.</a>';
-                            $showFormular = false;
-                        } else {
-                            echo 'Fehler';
-                        }
+                    if($result) {
+                        header('Location: geheim.php');
+                        echo 'Note erfolgreich eingetragen <a href="geheim.php">zurück zur Übersicht.</a>';
+                        $showFormular = false;
+                    } else {
+                        echo 'Fehler';
                     }
                 }
             }
+        }
             if($showFormular) {
             ?>
                 <form action="?register=1" method="post">
@@ -204,7 +206,7 @@
                             ?>
                         </select>
                     </fieldset>
-                    <br><br><br>
+                    <br><br>
                     <fieldset>
                         <label for="fachbereich">Note</label>
                         <select id="note" name="note">
@@ -221,8 +223,15 @@
                             <option value="5.0">5,0</option>
                         </select>
                     </fieldset>
-                    <br><br><br><br>
-
+                    <br><br>
+                    <fieldset>
+                        <label for="ects">ECTS</label>
+                        <select id="ects" name="ects">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                        </select>
+                    </fieldset>
+                    <br><br>
                     <input type="submit" value="eintragen"><br><br>
                     <input type="button" id="resetButton" value="Zurücksetzen">
                 </form>
