@@ -93,15 +93,15 @@
     </header>
     <main>
         <?php
-            session_start();
-            $pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
+        session_start();
+        $pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
 
-            if(!isset($_SESSION['userid'])) {
-                die('Bitte zuerst <a href="n_index.php">einloggen</a>');
-            }
+        if(!isset($_SESSION['userid'])) {
+            die('Bitte zuerst <a href="n_index.php">einloggen</a>');
+        }
 
-            $userid = $_SESSION['userid'];
-            $showFormular = true;
+        $userid = $_SESSION['userid'];
+        $showFormular = true;
 
         if(isset($_GET['register'])) {
             $userid = $_SESSION['userid'];
@@ -132,8 +132,7 @@
                     $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note, 'semester' => $semester, 'ects' => $ects));
 
                     if($result) {
-                        header('Location: geheim.php');
-                        echo 'Note erfolgreich eingetragen <a href="geheim.php">zurück zur Übersicht.</a>';
+                        echo 'Note erfolgreich eingetragen zurück zur Übersicht.</a>';
                         $showFormular = false;
                     } else {
                         echo 'Fehler';
@@ -141,103 +140,113 @@
                 }
             }
         }
-            if($showFormular) {
+        if($showFormular) {
             ?>
-                <form action="?register=1" method="post">
-                    <fieldset>
-                        <legend>Art des Faches</legend>
-                        <div id="radioFaecher">
-                            <input type="radio" id="pflichtfach" name="fachart" checked="checked" autofocus>
-                            <label for="pflichtfach">Pflichtfach</label>
-                            </br>
-                            <input type="radio" id="wahlpflichtfach" name="fachart">
-                            <label for="wahlpflichtfach">Wahlpflichtfach</label>
-                            </br>
-                            <input type="radio" id="seminar" name="fachart">
-                            <label for="seminar">Seminar</label>
-                            </br>
-                            <input type="radio" id="sprache" name="fachart">
-                            <label for="sprache">Sprache</label>
-                        </div>
-                    </fieldset>
-                    </br></br>
-                    <fieldset id="fachSelect">
-                        <select>
-                            <optgroup label="1.Semester">
+            <form action="?register=1" method="post">
+                <fieldset>
+                    <legend>Art des Faches</legend>
+                    <div id="radioFaecher">
+                        <input type="radio" id="pflichtfach" name="fachart" checked="checked" autofocus>
+                        <label for="pflichtfach">Pflichtfach</label>
+                        </br>
+                        <input type="radio" id="wahlpflichtfach" name="fachart">
+                        <label for="wahlpflichtfach">Wahlpflichtfach</label>
+                        </br>
+                        <input type="radio" id="seminar" name="fachart">
+                        <label for="seminar">Seminar</label>
+                        </br>
+                        <input type="radio" id="sprache" name="fachart">
+                        <label for="sprache">Sprache</label>
+                    </div>
+                </fieldset>
+                </br></br>
+                <fieldset id="fachSelect">
+                    <select>
+                        <optgroup label="1.Semester">
 
-                            </optgroup>
-                            <optgroup label="2.Semester">
+                        </optgroup>
+                        <optgroup label="2.Semester">
 
-                            </optgroup>
-                            <optgroup label="3.Semester">
+                        </optgroup>
+                        <optgroup label="3.Semester">
 
-                            </optgroup>
-                            <optgroup label="4.Semester">
+                        </optgroup>
+                        <optgroup label="4.Semester">
 
-                            </optgroup>
-                            <optgroup label="5.Semester">
+                        </optgroup>
+                        <optgroup label="5.Semester">
 
-                            </optgroup>
-                            <optgroup label="6.Semester">
+                        </optgroup>
+                        <optgroup label="6.Semester">
 
-                            </optgroup>
-                        </select>
-                    </fieldset>
-                    <br><br><br>
-                    <fieldset>
-                        <label for="semester">Semester der erbrachten Leistung:</label>
-                        <select name="semester" id="semester">
-                            <?php
-                            //Dynamisches Erzeugen der Semesterauswahl (immer letzte 10 Jahre WS+SS)
-                            $past = new DateTime('-10 years');
-                            $now = new DateTime();
-                            $now->getTimestamp();
-                            $begin = $past->format("y");
-                            $end = $now->format("y");
-                            for($i=$begin;$i<=$end;$i++){
-                                if($i==$end){
-                                    echo "<option value='SS".$i."' selected>SS$i</option>\n";
-                                    echo "<option value='WS".$i."'>WS$i</option>\n";
-                                }else{
-                                    echo "<option value='SS".$i."'>SS$i</option>\n";
-                                    echo "<option value='WS".$i."'>WS$i</option>\n";
-                                }
+                        </optgroup>
+                    </select>
+                </fieldset>
+                <br><br>
+                <fieldset>
+                    <label for="fachbereich">Fach</label>
+                    <select name="fachnr" id="fachnr">
+                        <option value="1">Grundlagen Programmierung</option>
+                        <option value="2">Netzwerke</option>
+                        <option value="3">Mathematik</option>
+                        <option value="4">Einführung in die BWL / Buchführung</option>
+                    </select>
+                </fieldset>
+                <br><br>
+                <fieldset>
+                    <label for="semester">Semester der erbrachten Leistung:</label>
+                    <select name="semester" id="semester">
+                        <?php
+                        //Dynamisches Erzeugen der Semesterauswahl (immer letzte 10 Jahre WS+SS)
+                        $past = new DateTime('-10 years');
+                        $now = new DateTime();
+                        $now->getTimestamp();
+                        $begin = $past->format("y");
+                        $end = $now->format("y");
+                        for($i=$begin;$i<=$end;$i++){
+                            if($i==$end){
+                                echo "<option value='SS".$i."' selected>SS$i</option>\n";
+                                echo "<option value='WS".$i."'>WS$i</option>\n";
+                            }else{
+                                echo "<option value='SS".$i."'>SS$i</option>\n";
+                                echo "<option value='WS".$i."'>WS$i</option>\n";
                             }
-                            ?>
-                        </select>
-                    </fieldset>
-                    <br><br>
-                    <fieldset>
-                        <label for="fachbereich">Note</label>
-                        <select id="note" name="note">
-                            <option value="1.0">1,0</option>
-                            <option value="1.3">1,3</option>
-                            <option value="1.7">1,7</option>
-                            <option value="2.0">2,0</option>
-                            <option value="2.3">2,3</option>
-                            <option value="2.7">2,7</option>
-                            <option value="3.0">3,0</option>
-                            <option value="3.3">3,3</option>
-                            <option value="3.7">3,7</option>
-                            <option value="4.0">4,0</option>
-                            <option value="5.0">5,0</option>
-                        </select>
-                    </fieldset>
-                    <br><br>
-                    <fieldset>
-                        <label for="ects">ECTS</label>
-                        <select id="ects" name="ects">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                        </select>
-                    </fieldset>
-                    <br><br>
-                    <input type="submit" value="eintragen"><br><br>
-                    <input type="button" id="resetButton" value="Zurücksetzen">
-                </form>
+                        }
+                        ?>
+                    </select>
+                </fieldset>
+                <br><br>
+                <fieldset>
+                    <label for="fachbereich">Note</label>
+                    <select id="note" name="note">
+                        <option value="1.0">1,0</option>
+                        <option value="1.3">1,3</option>
+                        <option value="1.7">1,7</option>
+                        <option value="2.0">2,0</option>
+                        <option value="2.3">2,3</option>
+                        <option value="2.7">2,7</option>
+                        <option value="3.0">3,0</option>
+                        <option value="3.3">3,3</option>
+                        <option value="3.7">3,7</option>
+                        <option value="4.0">4,0</option>
+                        <option value="5.0">5,0</option>
+                    </select>
+                </fieldset>
+                <br><br>
+                <fieldset>
+                    <label for="ects">ECTS</label>
+                    <select id="ects" name="ects">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                    </select>
+                </fieldset>
+                <br><br>
+                <input type="submit" value="eintragen"><br><br>
+                <input type="button" id="resetButton" value="Zurücksetzen">
+            </form>
             <?php
-            }
-            ?>
+        }
+        ?>
     </main>
     <form action="logout.php">
         <input type="submit" value="logout">

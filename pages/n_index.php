@@ -1,7 +1,6 @@
 <?php
-    /* Vor Beenden der Session wieder aufnehmen */
 	session_start();
-    $pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
+	$pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
 
 	if(isset($_GET['login'])) {
 		$email = $_POST['email'];
@@ -11,17 +10,13 @@
 		$result = $statement->execute(array('email' => $email));
 		$user = $statement->fetch();
 
-		if ($user !== false && password_verify($password, $user['password'])) {
-			$_SESSION['userid'] = $user['id'];
-			header('Location: n_user_data.php');
-		} else {
-			$errorMessage = "E-Mail oder Passwort war ungültig<br>";
-		}
+			if ($user !== false && password_verify($password, $user['password'])) {
+				$_SESSION['userid'] = $user['id'];
+				header('Location: n_user_data.php');
+			} else {
+				$errorMessage = "E-Mail oder Passwort war ungültig<br>";
+			}
 	}
-
-    /* Beenden der Session */
-    session_destroy();
-    $_SESSION = array();
 ?>
 <!DOCTYPE html>
 <html>

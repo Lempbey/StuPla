@@ -1,20 +1,12 @@
 <?php
     session_start();
-    $_SESSION["userid"]=1;
+    $pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
+
     if(!isset($_SESSION['userid'])) {
         die('Bitte zuerst <a href="login.php">einloggen</a>');
     }
     $userid = $_SESSION['userid'];
-
-    //Verbindung zur DB aufbauen
-    $pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
-
-    $statement = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-    $result = $statement->execute(array($userid));
-    $user = $statement->fetch();
-
 ?>
-
 <!DOCTYPE html>
 <html> 
     <head>
