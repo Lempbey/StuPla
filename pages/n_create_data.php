@@ -1,20 +1,3 @@
-<?php
-session_start();
-$_SESSION["userid"]=1;
-if(!isset($_SESSION['userid'])) {
-    die('Bitte zuerst <a href="../../Studienplaner/pages/login.php">einloggen</a>');
-}
-$userid = $_SESSION['userid'];
-
-//Verbindung zur DB aufbauen
-$pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
-
-$statement = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-$result = $statement->execute(array($userid));
-$user = $statement->fetch();
-
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,104 +92,144 @@ $user = $statement->fetch();
         </nav>
     </header>
     <main>
-        <form action="insert_data.php" id="scheinForm">
+        <?php
+            session_start();
+            $pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
 
-            <fieldset>
-                <legend>Art des Faches</legend>
-                <div id="radioFaecher">
-                    <input type="radio" id="pflichtfach" name="fachart" checked="checked" autofocus>
-                    <label for="pflichtfach">Pflichtfach</label>
-                    </br>
-                    <input type="radio" id="wahlpflichtfach" name="fachart">
-                    <label for="wahlpflichtfach">Wahlpflichtfach</label>
-                    </br>
-                    <input type="radio" id="seminar" name="fachart">
-                    <label for="seminar">Seminar</label>
-                    </br>
-                    <input type="radio" id="sprache" name="fachart">
-                    <label for="sprache">Sprache</label>
-                </div>
-            </fieldset>
-            </br></br>
-            <fieldset id="fachSelect">
-                <select>
-                    <optgroup label="1.Semester">
+            if(!isset($_SESSION['userid'])) {
+                die('Bitte zuerst <a href="n_index.php">einloggen</a>');
+            }
 
-                    </optgroup>
-                    <optgroup label="2.Semester">
+            $userid = $_SESSION['userid'];
+            $showFormular = true;
 
-                    </optgroup>
-                    <optgroup label="3.Semester">
+            if(isset($_GET['register'])) {
+                $userid = $_SESSION['userid'];
+                $error = false;
+                $fachnr = $_POST['fachnr'];
+                $note = $_POST['note'];
 
-                    </optgroup>
-                    <optgroup label="4.Semester">
+                if(!$error) {
+                    $statement = $pdo->prepare("SELECT * FROM leistungsschein WHERE id = :userid AND fachnr = :fachnr");
+                    $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr));
+                    $user = $statement->fetch();
 
-                    </optgroup>
-                    <optgroup label="5.Semester">
+                    if($user !== false) {
+                        $statement = $pdo->prepare("UPDATE leistungsschein SET note = :note WHERE id = :userid AND fachnr = :fachnr");
+                        $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note));
 
-                    </optgroup>
-                    <optgroup label="6.Semester">
-
-                    </optgroup>
-                </select>
-            </fieldset>
-            <br><br><br>
-            <fieldset>
-                <label for="semester">Semester der erbrachten Leistung:</label>
-                <select name="semester" id="semester">
-                    <?php
-                        //Dynamisches Erzeugen der Semesterauswahl (immer letzte 10 Jahre WS+SS)
-                        $past = new DateTime('-10 years');
-                        $now = new DateTime();
-                        $now->getTimestamp();
-                        $begin = $past->format("y");
-                        $end = $now->format("y");
-                        for($i=$begin;$i<=$end;$i++){
-                            if($i==$end){
-                                echo "<option value='SS".$i."' selected>SS$i</option>\n";
-                                echo "<option value='WS".$i."'>WS$i</option>\n";
-                            }else{
-                                echo "<option value='SS".$i."'>SS$i</option>\n";
-                                echo "<option value='WS".$i."'>WS$i</option>\n";
-                            }
+                        if($result) {
+                            echo 'Note erfolgreich geändert zurück zur <a href="geheim.php">Übersicht.</a>';
+                            $showFormular = false;
+                            $error = true;
                         }
-                    ?>
-                </select>
-            </fieldset>
-            <br><br><br>
+                    }
 
+                    if(!$error) {
+                        $statement = $pdo->prepare("INSERT INTO leistungsschein (id, fachnr, note) VALUES (:userid, :fachnr, :note)");
+                        $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note));
 
-            <fieldset>
-                <label for="note">Note</label>
-                <select>
-                    <optgroup label="1">
-                        <option value="1">1,0</option>
-                        <option value="1.3">1,3</option>
-                        <option value="1.7">1,7</option>
-                    </optgroup>
-                    <optgroup label="2">
-                        <option value="1">2,0</option>
-                        <option value="1.3">2,3</option>
-                        <option value="1.7">2,7</option>
-                    </optgroup>
-                    <optgroup label="3">
-                        <option value="1">3,0</option>
-                        <option value="1.3">3,3</option>
-                        <option value="1.7">3,7</option>
-                    </optgroup>
-                    <optgroup label="4">
-                        <option value="1">4,0</option>
-                    </optgroup>
-                </select>
+                        if($result) {
+                            header('Location: geheim.php');
+                            echo 'Note erfolgreich eingetragen <a href="geheim.php">zurück zur Übersicht.</a>';
+                            $showFormular = false;
+                        } else {
+                            echo 'Fehler';
+                        }
+                    }
+                }
+            }
+            if($showFormular) {
+            ?>
+                <form action="?register=1" method="post">
+                    <fieldset>
+                        <legend>Art des Faches</legend>
+                        <div id="radioFaecher">
+                            <input type="radio" id="pflichtfach" name="fachart" checked="checked" autofocus>
+                            <label for="pflichtfach">Pflichtfach</label>
+                            </br>
+                            <input type="radio" id="wahlpflichtfach" name="fachart">
+                            <label for="wahlpflichtfach">Wahlpflichtfach</label>
+                            </br>
+                            <input type="radio" id="seminar" name="fachart">
+                            <label for="seminar">Seminar</label>
+                            </br>
+                            <input type="radio" id="sprache" name="fachart">
+                            <label for="sprache">Sprache</label>
+                        </div>
+                    </fieldset>
+                    </br></br>
+                    <fieldset id="fachSelect">
+                        <select>
+                            <optgroup label="1.Semester">
 
-            </fieldset>
-            <br><br><br><br>
+                            </optgroup>
+                            <optgroup label="2.Semester">
 
-            <input type="button" id="saveButton" value="Speichern"><br><br>
-            <input type="button" id="resetButton" value="Zurücksetzen">
-        </form>
+                            </optgroup>
+                            <optgroup label="3.Semester">
+
+                            </optgroup>
+                            <optgroup label="4.Semester">
+
+                            </optgroup>
+                            <optgroup label="5.Semester">
+
+                            </optgroup>
+                            <optgroup label="6.Semester">
+
+                            </optgroup>
+                        </select>
+                    </fieldset>
+                    <br><br><br>
+                    <fieldset>
+                        <label for="semester">Semester der erbrachten Leistung:</label>
+                        <select name="semester" id="semester">
+                            <?php
+                            //Dynamisches Erzeugen der Semesterauswahl (immer letzte 10 Jahre WS+SS)
+                            $past = new DateTime('-10 years');
+                            $now = new DateTime();
+                            $now->getTimestamp();
+                            $begin = $past->format("y");
+                            $end = $now->format("y");
+                            for($i=$begin;$i<=$end;$i++){
+                                if($i==$end){
+                                    echo "<option value='SS".$i."' selected>SS$i</option>\n";
+                                    echo "<option value='WS".$i."'>WS$i</option>\n";
+                                }else{
+                                    echo "<option value='SS".$i."'>SS$i</option>\n";
+                                    echo "<option value='WS".$i."'>WS$i</option>\n";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </fieldset>
+                    <br><br><br>
+                    <fieldset>
+                        <label for="fachbereich">Note</label>
+                        <select id="note" name="note">
+                            <option value="1.0">1,0</option>
+                            <option value="1.3">1,3</option>
+                            <option value="1.7">1,7</option>
+                            <option value="2.0">2,0</option>
+                            <option value="2.3">2,3</option>
+                            <option value="2.7">2,7</option>
+                            <option value="3.0">3,0</option>
+                            <option value="3.3">3,3</option>
+                            <option value="3.7">3,7</option>
+                            <option value="4.0">4,0</option>
+                            <option value="5.0">5,0</option>
+                        </select>
+                    </fieldset>
+                    <br><br><br><br>
+
+                    <input type="submit" value="eintragen"><br><br>
+                    <input type="button" id="resetButton" value="Zurücksetzen">
+                </form>
+            <?php
+            }
+            ?>
     </main>
-
     <form action="logout.php">
         <input type="submit" value="logout">
     </form>
