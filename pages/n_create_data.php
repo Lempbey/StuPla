@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION["studiengang"]="WI";
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,29 +20,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
         $(document).ready(function(){
+            var faecherliste=[];
+            $("#submitButton").button();
             $("input[type='button']").button();
 
             $( "#semester" )
-                .selectmenu()
+                .selectmenu({width:150})
+                .selectmenu( "menuWidget" )
+                .addClass( "overflow" );
+            $( "#ects" )
+                .selectmenu({width:100})
                 .selectmenu( "menuWidget" )
                 .addClass( "overflow" );
             $("#radioFaecher").buttonset();
             $( "#note" )
-                .selectmenu()
-                .selectmenu( "menuWidget" )
+                .selectmenu({width:100})
                 .addClass( "overflow" );
-
+            $("#fachWrite").hide();
             $("#pflichtfach").on("click",function(){
                 $("#fachSelect").show();
+                $("#fachWrite").hide();
             });
             $("#seminar").on("click",function(){
                 $("#fachSelect").hide();
+                $("#fachWrite").show();
             });
             $("#sprache").on("click",function(){
                 $("#fachSelect").hide();
+                $("#fachWrite").show();
             });
             $("#wahlpflichtfach").on("click",function(){
                 $("#fachSelect").hide();
+                $("#fachWrite").show();
             });
             //XML Datei für Pflichtfächer wird ausgelesen
             $.ajax({
@@ -49,22 +62,27 @@
 
                 },
                 complete: function () {
+                    faecherliste[0].sort();
+                    for(var i=0; i<=faecherliste[0].length-1;i++){
+                        $("#opt1").append('<option value='+faecherliste[0][i]+'>'+faecherliste[0][i]+'</option>');
+                    }
+                    $("#pflichtmenu").selectmenu({width:250});
 
                 },
                 success: function (xml) {
                     // Extract relevant data from XML
-                    var i = 0;
-                    $(xml).find('fach').each(function () {
-                        var t = [];
-                        var note = $(this).find("note").text();
-                        var ects = $(this).find("ects").text();
-                        var fachnr = $(this).find("fachnr").text();
-                        var semester = $(this).find("semester").text();
-                        t.push(note);
-                        t.push(ects);
-                        t.push(fachnr);
-                        t.push(semester);
-                        i++;
+                    $(xml).find('studiengang').each(function (index, element) {
+                        if(element.attributes["name"]="<?php echo $_SESSION["studiengang"]?>")
+                        {
+                            var semesterliste = [];
+                            $(element).find('semester').each(function(){
+                                $(this).find("name").each(function(){
+                                    var fachname =$(this).text();
+                                    semesterliste.push(fachname);
+                                });
+                                faecherliste.push(semesterliste);
+                            });
+                        }
                     });
 
                 }
@@ -93,7 +111,6 @@
     </header>
     <main>
         <?php
-        session_start();
         $pdo = new PDO('mysql:host=localhost;dbname=studienplaner', 'root', '');
 
         if(!isset($_SESSION['userid'])) {
@@ -161,36 +178,18 @@
                 </fieldset>
                 </br></br>
                 <fieldset id="fachSelect">
-                    <select>
-                        <optgroup label="1.Semester">
+                    <label for="pflichtmenu">Pflichtfach</label>
+                    <select id="pflichtmenu">
+                        <optgroup id="opt1" label="Pflichtfächer">
 
                         </optgroup>
-                        <optgroup label="2.Semester">
 
-                        </optgroup>
-                        <optgroup label="3.Semester">
-
-                        </optgroup>
-                        <optgroup label="4.Semester">
-
-                        </optgroup>
-                        <optgroup label="5.Semester">
-
-                        </optgroup>
-                        <optgroup label="6.Semester">
-
-                        </optgroup>
                     </select>
                 </fieldset>
                 <br><br>
-                <fieldset>
-                    <label for="fachbereich">Fach</label>
-                    <select name="fachnr" id="fachnr">
-                        <option value="1">Grundlagen Programmierung</option>
-                        <option value="2">Netzwerke</option>
-                        <option value="3">Mathematik</option>
-                        <option value="4">Einführung in die BWL / Buchführung</option>
-                    </select>
+                <fieldset id="fachWrite">
+                    <label for="fach">Fach</label>
+                    <input type="text" id="fach">
                 </fieldset>
                 <br><br>
                 <fieldset>
@@ -241,7 +240,7 @@
                     </select>
                 </fieldset>
                 <br><br>
-                <input type="submit" value="eintragen"><br><br>
+                <input type="submit" value="eintragen" id="submitButton"><br><br>
                 <input type="button" id="resetButton" value="Zurücksetzen">
             </form>
             <?php

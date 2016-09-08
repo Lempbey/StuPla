@@ -117,7 +117,6 @@ $(document).ready(function(){
                 for(var i=0;i<=schein.length-1;i++){
                     var a = schein[i][3];
                     summe[a]=parseInt(schein[i][1],10)+parseInt(summe[a],10);
-                    alert(summe[i]);
                 }
                 var data = {
                     // A labels array that can contain any sort of values

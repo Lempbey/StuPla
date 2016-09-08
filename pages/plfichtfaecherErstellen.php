@@ -163,7 +163,7 @@ for($i=1;$i<=4;$i++){
 }
 foreach($faecher as $einFach)
 {
-    if($einFach->studiengang="WI"){
+    if($einFach->studiengang=="WI"){
 
         switch($einFach->semester){
             case "1":
@@ -192,46 +192,87 @@ foreach($faecher as $einFach)
 
 
     }
-    elseif($einFach->studiengang="BWL"){
-        //create a tutorial element
-        $fach = $semester2->appendChild(
-            $xml->createElement("fach"));
+    else if($einFach->studiengang=="BWL"){
+        switch($einFach->semester)
+        {
+            case "1":
+                //create a fach element
+                $fach = $xml_studiengang2->childNodes->item(0)->appendChild(
+                    $xml->createElement("fach"));
+                //create the name element
+                $fach->appendChild(
+                    $xml->createElement("name", $einFach->name));
 
-        //create the title element
-        $fach->appendChild(
-            $xml->createElement("name", $einFach->name));
+                //create the ects element
+                $fach->appendChild(
+                    $xml->createElement("ects", $einFach->ects));
+                break;
+            case "2":
+                $fach = $xml_studiengang2->childNodes->item(1)->appendChild(
+                    $xml->createElement("fach"));
 
-        //create the date element
-        $fach->appendChild(
-            $xml->createElement("ects", $einFach->ects));
+                $fach->appendChild(
+                    $xml->createElement("name", $einFach->name));
+
+                $fach->appendChild(
+                    $xml->createElement("ects", $einFach->ects));
+                break;
+        }
+
     }
-    elseif($einFach->studiengang="IB"){
-        //create a tutorial element
-        $fach = $semester3->appendChild(
-            $xml->createElement("fach"));
+    elseif($einFach->studiengang=="IB"){
+        switch($einFach->semester)
+        {
+            case "1":
+                //create a fach element
+                $fach = $xml_studiengang3->childNodes->item(0)->appendChild(
+                    $xml->createElement("fach"));
+                //create the name element
+                $fach->appendChild(
+                    $xml->createElement("name", $einFach->name));
 
+                //create the ects element
+                $fach->appendChild(
+                    $xml->createElement("ects", $einFach->ects));
+                break;
+            case "2":
+                $fach = $xml_studiengang3->childNodes->item(1)->appendChild(
+                    $xml->createElement("fach"));
 
-        //create the title element
-        $fach->appendChild(
-            $xml->createElement("name", $einFach->name));
+                $fach->appendChild(
+                    $xml->createElement("name", $einFach->name));
 
-        //create the date element
-        $fach->appendChild(
-            $xml->createElement("ects", $einFach->ects));
+                $fach->appendChild(
+                    $xml->createElement("ects", $einFach->ects));
+                break;
+        }
     }
-    elseif($einFach->studiengang="WIng"){
-        //create a tutorial element
-        $fach = $semester4->appendChild(
-            $xml->createElement("fach"));
+    elseif($einFach->studiengang=="WIng"){
+        switch($einFach->semester)
+        {
+            case "1":
+                //create a fach element
+                $fach = $xml_studiengang4->childNodes->item(0)->appendChild(
+                    $xml->createElement("fach"));
+                //create the name element
+                $fach->appendChild(
+                    $xml->createElement("name", $einFach->name));
 
+                //create the ects element
+                $fach->appendChild(
+                    $xml->createElement("ects", $einFach->ects));
+                break;
+            case "2":
+                $fach = $xml_studiengang4->childNodes->item(1)->appendChild(
+                    $xml->createElement("fach"));
 
-        //create the title element
-        $fach->appendChild(
-            $xml->createElement("name", $einFach->name));
+                $fach->appendChild(
+                    $xml->createElement("name", $einFach->name));
 
-        //create the date element
-        $fach->appendChild(
-            $xml->createElement("ects", $einFach->ects));
+                $fach->appendChild(
+                    $xml->createElement("ects", $einFach->ects));
+                break;
+        }
     }
 
 }
