@@ -121,32 +121,34 @@ $_SESSION["studiengang"]="WI";
         $showFormular = true;
 
         if(isset($_GET['register'])) {
+            $fach = $_POST['pflichtmenu'];
             $userid = $_SESSION['userid'];
             $error = false;
-            $fachnr = $_POST['fachnr'];
             $note = $_POST['note'];
             $semester = $_POST['semester'];
             $ects = $_POST['ects'];
 
+            echo $pflichtmenu;
+
             if(!$error) {
-                $statement = $pdo->prepare("SELECT * FROM leistungsschein WHERE id = :userid AND fachnr = :fachnr");
-                $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr));
+                $statement = $pdo->prepare("SELECT * FROM leistungsschein WHERE id = :userid AND fach = :pflichtmenu");
+                $result = $statement->execute(array('userid' => $userid, 'pflichtmenu' => $fach));
                 $user = $statement->fetch();
 
                 if($user !== false) {
-                    $statement = $pdo->prepare("UPDATE leistungsschein SET note = :note WHERE id = :userid AND fachnr = :fachnr");
-                    $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note));
+                    $statement = $pdo->prepare("UPDATE leistungsschein SET note = :note WHERE id = :userid AND fach = :pflichtmenu");
+                    $result = $statement->execute(array('userid' => $userid, 'pflichtmenu' => $fach, 'note' => $note));
 
                     if($result) {
-                        echo 'Note erfolgreich geändert zurück zur <a href="geheim.php">Übersicht.</a>';
+                        echo 'Note erfolgreich geändert zurück zur Übersicht.</a>';
                         $showFormular = false;
                         $error = true;
                     }
                 }
 
                 if(!$error) {
-                    $statement = $pdo->prepare("INSERT INTO leistungsschein (id, fachnr, note, semester, ects) VALUES (:userid, :fachnr, :note, :semester, :ects)");
-                    $result = $statement->execute(array('userid' => $userid, 'fachnr' => $fachnr, 'note' => $note, 'semester' => $semester, 'ects' => $ects));
+                    $statement = $pdo->prepare("INSERT INTO leistungsschein (id, fach, note, semester, ects) VALUES (:userid, :pflichtmenu, :note, :semester, :ects)");
+                    $result = $statement->execute(array('userid' => $userid, 'pflichtmenu' => $fach, 'note' => $note, 'semester' => $semester, 'ects' => $ects));
 
                     if($result) {
                         echo 'Note erfolgreich eingetragen zurück zur Übersicht.</a>';
@@ -179,17 +181,10 @@ $_SESSION["studiengang"]="WI";
                 </br></br>
                 <fieldset id="fachSelect">
                     <label for="pflichtmenu">Pflichtfach</label>
-                    <select id="pflichtmenu">
-                        <optgroup id="opt1" label="Pflichtfächer">
-
+                    <select id="pflichtmenu" name="pflichtmenu">
+                        <optgroup id="opt1">
                         </optgroup>
-
                     </select>
-                </fieldset>
-                <br><br>
-                <fieldset id="fachWrite">
-                    <label for="fach">Fach</label>
-                    <input type="text" id="fach">
                 </fieldset>
                 <br><br>
                 <fieldset>
